@@ -35,12 +35,18 @@ def solve_ip(num_users, compatibility_scores, compatibility_threshold, max_score
     print("---------- RESULTS ----------")
     print(f"Status: {model.status}, {LpStatus[model.status]}")
     print(f"Objective: {model.objective.value()}")
+
+    matches = []
     for var in model.variables():
         print(f"{var.name}: {var.value()}")
+        if var.value():
+            matches.append(list(map(int, ''.join(x for x in var.name if x.isdigit()))))
+    print("\n---------- MATCHES ----------")
+    print(matches)
+    return matches
 
 
 if __name__ == "__main__":
-    # ############### Dummy test data
     num_of_users = 6
     num_of_interests = 4
     rank_range = 5
@@ -49,8 +55,7 @@ if __name__ == "__main__":
     user_compatibility_scores = {(1, 2): 56, (1, 3): 22, (1, 4): 74, (1, 5): 92, (1, 6): 32,
                                  (2, 3): 47, (2, 4): 17, (2, 5): 68, (2, 6): 42, (3, 4): 9,
                                  (3, 5): 13, (3, 6): 83, (4, 5): 45, (4, 6): 71, (5, 6): 28}
-    # ###############
-    
+
     print('Attempting to solve the integer programming problem...')
     solve_ip(num_of_users, user_compatibility_scores, threshold_compatibility, score_max)
 

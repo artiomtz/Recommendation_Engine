@@ -9,8 +9,9 @@ def read_csv(file_name, rating_columns):
         user_preferences = []
         for column in rating_columns:
             user_preferences.append(int(row[column][0]))
-        preferences[i] = user_preferences
+        preferences[i + 1] = user_preferences
 
+    print(preferences)
     return preferences
 
 
