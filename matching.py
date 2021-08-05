@@ -16,11 +16,25 @@ def solve_ip(num_users, compatibility_scores, compatibility_threshold, max_score
         model += (lpSum(x_ij[(i, j)] + x_ij[(j, i)] for j in x_j) <= 1, f"one_match_per_user_i{i}")
         for j in x_j:
             if j > i:
-                model += (x_ij[(i, j)] * (compatibility_scores[(i, j)] / max_score - compatibility_threshold) >= 0, f"compatibility_score_i{i}_j{j}")
-                model += (x_ij[(i, j)] + lpSum(x_ij[(i, k)] for k in range(i+1, len(x_i)+1) if compatibility_scores[(i, j)] > compatibility_scores[(i, k)]) + lpSum(x_ij[(k, j)] for k in range(1, j) if compatibility_scores[(i, j)] > compatibility_scores[(k, j)]) <= 1, f"best_compatibility_i{i}_j{j}")
+                model += (x_ij[(i, j)] * (compatibility_scores[(i, j)] / max_score - compatibility_threshold) >= 0,
+                          f"compatibility_threshold_i{i}_j{j}")
+
+                model += (x_ij[(i, j)] +
+                          lpSum(x_ij[(i, k)] for k in range(i+1, len(x_i)+1)
+                                if compatibility_scores[(i, j)] > compatibility_scores[(i, k)])
+                          + lpSum(x_ij[(k, j)] for k in range(1, j)
+                                  if compatibility_scores[(i, j)] > compatibility_scores[(k, j)]) <= 1,
+                          f"best_compatibility_i{i}_j{j}")
             if j < i:
-                model += (x_ij[(i, j)] * (compatibility_scores[(j, i)] / max_score - compatibility_threshold) >= 0, f"compatibility_score_i{i}_j{j}")
-                model += (x_ij[(i, j)] + lpSum(x_ij[(i, k)] for k in range(1, i) if compatibility_scores[(j, i)] > compatibility_scores[(k, i)]) + lpSum(x_ij[(k, j)] for k in range(j + 1, len(x_j)+1) if compatibility_scores[(j, i)] > compatibility_scores[(j, k)]) <= 1, f"best_compatibility_i{i}_j{j}")
+                model += (x_ij[(i, j)] * (compatibility_scores[(j, i)] / max_score - compatibility_threshold) >= 0,
+                          f"compatibility_threshold_i{i}_j{j}")
+
+                model += (x_ij[(i, j)] +
+                          lpSum(x_ij[(i, k)] for k in range(1, i)
+                                if compatibility_scores[(j, i)] > compatibility_scores[(k, i)])
+                          + lpSum(x_ij[(k, j)] for k in range(j + 1, len(x_j)+1)
+                                  if compatibility_scores[(j, i)] > compatibility_scores[(j, k)]) <= 1,
+                          f"best_compatibility_i{i}_j{j}")
 
     # Add the objective function to the model
     obj_func = lpSum(x_ij[(i, j)] for i in x_i for j in x_j)
@@ -40,7 +54,10 @@ def solve_ip(num_users, compatibility_scores, compatibility_threshold, max_score
     for var in model.variables():
         print(f"{var.name}: {var.value()}")
         if var.value():
-            matches.append(list(map(int, ''.join(x for x in var.name if x.isdigit()))))
+            user1 = int(''.join(x for x in var.name.split(',')[0] if x.isdigit()))
+            user2 = int(''.join(x for x in var.name.split(',')[1] if x.isdigit()))
+            matches.append([user1, user2])
+
     print("\n---------- MATCHES ----------")
     print(matches)
     return matches
@@ -58,14 +75,3 @@ if __name__ == "__main__":
 
     print('Attempting to solve the integer programming problem...')
     solve_ip(num_of_users, user_compatibility_scores, threshold_compatibility, score_max)
-
-    # x = max(list(dict(filter(lambda elem: elem[0][0] == 3 or elem[0][1] == 4, user_compatibility_scores.items())).values()))
-    # model += (x_ij[(i, j)] * compatibility_scores[(i, j)] >= max(list(dict(filter(lambda elem: elem[0][0] == i or elem[0][1] == j, compatibility_scores.items())).values())), f"best_compatibility_i{i}_j{j}")
-    # print(x)
-
-    # x_i = list(range(1, num_of_users + 1))
-    # x_j = list(range(1, num_of_users + 1))
-    # t = list(user_compatibility_scores[(q, r)] for q in x_i for r in x_j if q < r)
-    # model += (x_ij[(i, j)] * compatibility_scores[(i, j)] >= max(list(x_ij[(q, r)] * compatibility_scores[(q, r)] for q in x_i for r in x_j if q < r)), f"best_compatibility_i{i}_j{j}")
-    # print(t)
-
