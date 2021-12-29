@@ -9,8 +9,6 @@ def remap_ids(preferences, mapping, map_unmap):
             mapping_new[i+1] = user
             preferences_new_ids[i+1] = preferences[user]
 
-        print(f"Remapping: {mapping_new}")
-        print(f"New IDs: {preferences_new_ids}")
         return preferences_new_ids, mapping_new
 
     else:
@@ -19,7 +17,6 @@ def remap_ids(preferences, mapping, map_unmap):
         for i in preferences:
             matches_new_ids.append([mapping[i[0]], mapping[i[1]]])
 
-        print(f"---------- FINAL MATCH RESULTS ----------\n{matches_new_ids}")
         return matches_new_ids
 
 
@@ -28,8 +25,8 @@ if __name__ == "__main__":
     set_mapping = {1: 0, 2: 1, 3: 7, 4: 9, 5: 15, 6: 16}
     match_results = [[1, 4], [3, 6], [5, 2]]
 
-    print('Attempting to reassign incremental IDs...')
+    print("Attempting to reassign incremental IDs...")
     remap_ids(user_pref, {}, True)
 
-    print('Attempting to reassign original IDs...')
+    print("Attempting to reassign original IDs...")
     remap_ids(match_results, set_mapping, False)

@@ -54,8 +54,8 @@ def solve_ip(num_users, compatibility_scores, compatibility_threshold, max_score
     for var in model.variables():
         print(f"{var.name}: {var.value()}")
         if var.value():
-            user1 = int(''.join(x for x in var.name.split(',')[0] if x.isdigit()))
-            user2 = int(''.join(x for x in var.name.split(',')[1] if x.isdigit()))
+            user1 = int("".join(x for x in var.name.split(",")[0] if x.isdigit()))
+            user2 = int("".join(x for x in var.name.split(",")[1] if x.isdigit()))
             matches.append([user1, user2])
 
     print("\n---------- MATCHES ----------")
@@ -73,5 +73,5 @@ if __name__ == "__main__":
                                  (2, 3): 47, (2, 4): 17, (2, 5): 68, (2, 6): 42, (3, 4): 9,
                                  (3, 5): 13, (3, 6): 83, (4, 5): 45, (4, 6): 71, (5, 6): 28}
 
-    print('Attempting to solve the integer programming problem...')
+    print("Attempting to solve the integer programming problem...")
     solve_ip(num_of_users, user_compatibility_scores, threshold_compatibility, score_max)

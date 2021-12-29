@@ -4,7 +4,7 @@ import json
 def read_json(json_data, max_rank):
     json_data_filtered = {}
     preferences = {}
-    num_interests = json_data['num_interests']
+    num_interests = json_data["num_interests"]
 
     for user_id in json_data:
         if str(user_id).isnumeric():
@@ -34,17 +34,14 @@ def read_json(json_data, max_rank):
                     break
 
     num_users = len(preferences)
-    print(f"Interests: {num_interests}")
-    print(f"Users: {num_users}")
-    print(preferences)
     return preferences, num_interests, num_users
 
 
 if __name__ == "__main__":
     rank_range = 5
 
-    with open('input_test_data/input_test_data_1.json') as json_file:
+    with open("input_test_data/input_test_data_1.json") as json_file:
         json_dict = json.load(json_file)
 
-    print('Attempting to read the JSON file...')
+    print("Attempting to read the JSON file...")
     read_json(json_dict, rank_range)
