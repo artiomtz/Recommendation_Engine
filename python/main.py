@@ -1,9 +1,10 @@
-from read_csv import read_csv
+# from read_csv import read_csv
 from read_json import read_json
 from remap_ids import remap_ids
 from compatibility import calculate_compatibility
 from matching import solve_ip
 import json
+import sys
 
 
 if __name__ == "__main__":
@@ -16,8 +17,12 @@ if __name__ == "__main__":
     # print("\n\nAttempting to read the CSV file...")
     # user_preferences, num_interests, num_users = read_csv(csv_file_name, csv_rating_columns)
 
-    with open("input_test_data/input_test_data_1.json") as json_file:
-        json_dict = json.load(json_file)
+    json_dict = {}
+    if len(sys.argv) > 1 and sys.argv[1] == "node":
+        json_dict = json.loads(str(sys.argv[2]))
+    else:
+        with open("input_test_data/input_test_data_1.json") as json_file:
+            json_dict = json.load(json_file)
 
     print("\n\nAttempting to read the JSON file...")
     user_preferences, num_interests, num_users = read_json(json_dict, rank_range)
@@ -41,6 +46,6 @@ if __name__ == "__main__":
 
     print("\n\nAttempting to reassign original IDs...")
     final_results = remap_ids(matches, mapping, False)
-    
+
     print("\n\n---------- FINAL MATCH RESULTS ----------")
     print(final_results)

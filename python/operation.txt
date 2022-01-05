@@ -1,13 +1,13 @@
 Input JSON structure:
 {
     "num_interests": <number of interests>,
-    "<user id>": [
-        { "<interest id>": <interest rating> },
-        { "<interest id>": <interest rating> }
+    "<user_id>": [
+        { "<interest_id>": <interest rating> },
+        { "<interest_id>": <interest rating> }
     ],
-    "<user id>": [
-        { "<interest id>": <interest rating> },
-        { "<interest id>": <interest rating> }
+    "<user_id>": [
+        { "<interest_id>": <interest rating> },
+        { "<interest_id>": <interest rating> }
     ]
 }
 
@@ -36,7 +36,7 @@ Example:
 
 
 Output structure:
-[[<user id>, <user id>], [<user id>, <user id>]]
+[[<user_id>, <user_id>], [<user_id>, <user_id>]]
 
 Example:
 [[1, 3], [2, 8], [19, 4]]
